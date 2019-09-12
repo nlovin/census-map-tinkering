@@ -54,7 +54,7 @@ us.proj <- "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0
 
 ##### ------------- Map ------------- ##### 
 
-## Make the map
+## Make the map -- FIXED WIDTH BINS
 work.map <- tm_shape(county.working, 
          projection = us.proj) +
   tm_fill("working.pct",
@@ -77,6 +77,55 @@ work.map <- tm_shape(county.working,
 ## save image
 tmap_save(work.map, "working_county_map.png", width=1920, height=1080, asp=0)
 
+
+## Make the map -- BINS USING JENKS
+work.map.jenks <- tm_shape(county.working, 
+                     projection = us.proj) +
+  tm_fill("working.pct",
+          palette = "PuBuGn",
+          title = "% Working",
+          style = "jenks") +
+  tm_shape(states_shp,
+           projection = us.proj) +
+  tm_borders() +
+  tm_layout(main.title = "Percentage of the Population in the Labor Force (by county), 2013-2017",
+            legend.title.size = .8,
+            legend.text.size = 0.5, 
+            legend.position = c("LEFT", "BOTTOM"),
+            main.title.size = .8, 
+            frame = F) +
+  tm_credits("Source: 2013-2017 5-year American Community Survey | Measures include people 16 years and older | jenks breaks", 
+             position = c("RIGHT", "BOTTOM"),
+             size = .3) 
+
+
+## save image
+tmap_save(work.map.jenks, "working_county_map_jenks.png", width=1920, height=1080, asp=0)
+
+
+## Make the map -- BINS USING JENKS
+work.map.qtile <- tm_shape(county.working, 
+                     projection = us.proj) +
+  tm_fill("working.pct",
+          palette = "PuBuGn",
+          title = "% Working",
+          style = "quantile") +
+  tm_shape(states_shp,
+           projection = us.proj) +
+  tm_borders() +
+  tm_layout(main.title = "Percentage of the Population in the Labor Force (by county), 2013-2017",
+            legend.title.size = .8,
+            legend.text.size = 0.5, 
+            legend.position = c("LEFT", "BOTTOM"),
+            main.title.size = .8, 
+            frame = F) +
+  tm_credits("Source: 2013-2017 5-year American Community Survey | Measures include people 16 years and older | quantile breaks", 
+             position = c("RIGHT", "BOTTOM"),
+             size = .3) 
+
+
+## save image
+tmap_save(work.map.qtile, "working_county_map_qtile.png", width=1920, height=1080, asp=0)
 
 
 ##### ------------- Notes ------------- ##### 
