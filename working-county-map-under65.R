@@ -61,3 +61,13 @@ work.map <- tm_shape(county.working.under65,
 
 ## save image
 tmap_save(work.map, "working_county_map_under65.png", width=1920, height=1080, asp=0)
+
+
+## Data density
+den <- ggplot(data = county.working.under65, mapping = aes(x=working.pct)) +
+  geom_density() +
+  ggthemes::theme_fivethirtyeight()
+
+
+work.map
+print(den, vp = grid::viewport(0.9, 0.1, width = 0.25, height = 0.15))
